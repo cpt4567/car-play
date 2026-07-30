@@ -1,26 +1,83 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0c1118;
+  --foreground: #f5f0e6;
+  --accent: #f5c542;
+  --muted: #8b93a7;
+  --panel: #161d28;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* subtle asphalt grain via layered gradients */
+.road-atmosphere {
+  background:
+    radial-gradient(ellipse 80% 50% at 70% 20%, rgba(245, 197, 66, 0.08), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 10% 80%, rgba(61, 126, 166, 0.1), transparent 50%),
+    linear-gradient(165deg, #121820 0%, #0c1118 45%, #0a0e14 100%);
+}
+
+.lane-lines {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 48px,
+      rgba(245, 197, 66, 0.06) 48px,
+      rgba(245, 197, 66, 0.06) 50px,
+      transparent 50px,
+      transparent 98px
+    );
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lane-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-rise {
+  animation: rise-in 0.7s ease-out both;
+}
+
+.animate-rise-delay {
+  animation: rise-in 0.7s ease-out 0.15s both;
+}
+
+.animate-rise-delay-2 {
+  animation: rise-in 0.7s ease-out 0.28s both;
+}
+
+.lane-pulse {
+  animation: lane-pulse 3.2s ease-in-out infinite;
+}
+
+kbd {
+  font-family: inherit;
 }
