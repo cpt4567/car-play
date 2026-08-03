@@ -41,6 +41,10 @@ export function ParkingSimulator() {
   const [courseId, setCourseId] = useState(parkingCourses[0].id);
   const course = parkingCourses.find((c) => c.id === courseId) ?? parkingCourses[0];
 
+  const [viewMode, setViewMode] = useState<"topdown" | "rearcam">("topdown");
+  const viewModeRef = useRef(viewMode);
+  viewModeRef.current = viewMode;
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const carRef = useRef<CarState>(initialCar(course));
   const inputRef = useRef<ControlInput>({ throttle: 0, steer: 0, brake: false });
@@ -148,19 +152,33 @@ export function ParkingSimulator() {
       canvas.height = c.height;
       ctx.clearRect(0, 0, c.width, c.height);
 
+      const mode = viewModeRef.current;
+
       const g = ctx.createLinearGradient(0, 0, c.width, c.height);
       g.addColorStop(0, "#151b24");
       g.addColorStop(1, "#0c1018");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, c.width, c.height);
 
+      ctx.save();
+
+      if (mode === "rearcam") {
+        const rearX = car.x - Math.cos(car.heading) * (DEFAULT_CAR.length / 2);
+        const rearY = car.y - Math.sin(car.heading) * (DEFAULT_CAR.length / 2);
+        ctx.translate(c.width / 2, c.height * 0.85);
+        ctx.scale(-1, 1); // 거울 모드 (후방 카메라)
+        ctx.rotate(-(car.heading + Math.PI) - Math.PI / 2);
+        ctx.translate(-rearX, -rearY);
+      }
+
       ctx.strokeStyle = "rgba(255,255,255,0.04)";
       ctx.lineWidth = 1;
-      for (let x = 0; x < c.width; x += 40) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, c.height);
-        ctx.stroke();
+      // 넓은 그리드 (카메라 이동 대비)
+      for (let x = -1000; x < 2000; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, -1000); ctx.lineTo(x, 2000); ctx.stroke();
+      }
+      for (let y = -1000; y < 2000; y += 40) {
+        ctx.beginPath(); ctx.moveTo(-1000, y); ctx.lineTo(2000, y); ctx.stroke();
       }
 
       const t = c.target;
@@ -190,9 +208,13 @@ export function ParkingSimulator() {
         ctx.fillRect(o.x, o.y, o.w, o.h);
         ctx.strokeRect(o.x, o.y, o.w, o.h);
         if (o.label) {
+          ctx.save();
+          ctx.translate(o.x + 4, o.y + 14);
+          if (mode === "rearcam") ctx.scale(-1, 1); // 글자 좌우 반전 복구
           ctx.fillStyle = "#8b93a7";
           ctx.font = "10px sans-serif";
-          ctx.fillText(o.label, o.x + 4, o.y + 14);
+          ctx.fillText(o.label, 0, 0);
+          ctx.restore();
         }
       }
 
@@ -237,6 +259,35 @@ export function ParkingSimulator() {
         ctx.restore();
       }
       ctx.restore();
+
+      ctx.restore(); // end world transform
+
+      if (mode === "rearcam") {
+        // 주차 가이드라인 (화면 고정)
+        ctx.save();
+        ctx.translate(c.width / 2, c.height * 0.85);
+        ctx.lineWidth = 2;
+        const gw = DEFAULT_CAR.width / 2 + 4;
+        
+        // 빨간선 (위험)
+        ctx.strokeStyle = "rgba(232, 93, 76, 0.8)";
+        ctx.beginPath(); ctx.moveTo(-gw, -30); ctx.lineTo(gw, -30); ctx.stroke();
+        
+        // 노란선 (주의)
+        ctx.strokeStyle = "rgba(245, 197, 66, 0.8)";
+        ctx.beginPath(); ctx.moveTo(-gw, -80); ctx.lineTo(gw, -80); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(-gw, -140); ctx.lineTo(gw, -140); ctx.stroke();
+        
+        // 사이드 라인
+        ctx.beginPath(); ctx.moveTo(-gw, 0); ctx.lineTo(-gw, -140); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(gw, 0); ctx.lineTo(gw, -140); ctx.stroke();
+        
+        ctx.fillStyle = "rgba(255,255,255,0.3)";
+        ctx.font = "12px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("후방 카메라 (좌우 반전)", 0, -155);
+        ctx.restore();
+      }
 
       if (success) {
         ctx.fillStyle = "rgba(12,16,24,0.55)";
@@ -334,10 +385,32 @@ export function ParkingSimulator() {
         </span>
         {hud.collided && <span className="text-[#ff8f82]">충돌 — R 로 리셋</span>}
         {hud.success && <span className="text-[#7dcca0]">성공!</span>}
+        
+        <div className="ml-auto flex items-center gap-1 rounded-sm border border-white/15 bg-[#121820] p-0.5">
+          <button
+            type="button"
+            onClick={() => setViewMode("topdown")}
+            className={`px-3 py-1 transition-colors ${
+              viewMode === "topdown" ? "bg-[#3d4a5c] text-white" : "text-[#8b93a7] hover:text-white"
+            }`}
+          >
+            탑다운
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode("rearcam")}
+            className={`px-3 py-1 transition-colors ${
+              viewMode === "rearcam" ? "bg-[#3d4a5c] text-white" : "text-[#8b93a7] hover:text-white"
+            }`}
+          >
+            후방 카메라
+          </button>
+        </div>
+
         <button
           type="button"
           onClick={reset}
-          className="ml-auto border border-white/20 px-3 py-1 text-[#f5f0e6] hover:border-[#f5c542]"
+          className="border border-white/20 px-3 py-1.5 text-[#f5f0e6] hover:border-[#f5c542]"
         >
           리셋 (R)
         </button>

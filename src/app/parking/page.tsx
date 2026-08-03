@@ -1,5 +1,5 @@
 import { SiteHeader } from "@/components/SiteHeader";
-import { ParkingSimulator } from "@/components/ParkingSimulator";
+import { ParkingSimulator3D } from "@/components/ParkingSimulator3D";
 
 export default function ParkingPage() {
   return (
@@ -13,7 +13,7 @@ export default function ParkingPage() {
           <p className="text-xs tracking-[0.3em] text-[#f5c542]">REVERSE · PARK</p>
         </div>
         <div className="mt-5">
-          <ParkingSimulator />
+          <ParkingSimulator3D />
         </div>
       </main>
     </div>
