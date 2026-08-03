@@ -14,10 +14,11 @@ alwaysApply: true
 |------|------|
 | `src/app/signs/` | 도로 안내판·교통표지 |
 | `src/app/signals/` | 차량·보행자 신호등 |
+| `src/app/controls/` | 와이퍼·상향등 등 칼럼 레버 조작 |
 | `src/app/direction/` | 조향 방향 퀴즈 페이지 |
 | `src/app/parking/` | 주차 시뮬레이터 페이지 |
 | `src/app/laws/` | 도로교통법 요약 페이지 |
-| `src/data/` | 콘텐츠 데이터 (표지, 법규, 시나리오, 코스) |
+| `src/data/` | 콘텐츠 데이터 (표지, 법규, 시나리오, 코스, 조작) |
 | `src/lib/parking-physics.ts` | 자전거 모델 기구학 |
 | `src/components/` | 클라이언트 인터랙션 컴포넌트 |
 

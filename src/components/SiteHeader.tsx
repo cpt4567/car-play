@@ -3,6 +3,7 @@ import Link from "next/link";
 const links = [
   { href: "/signs", label: "안내판" },
   { href: "/signals", label: "신호등" },
+  { href: "/controls", label: "조작" },
   { href: "/laws", label: "도로교통법" },
   { href: "/direction", label: "방향감각" },
   { href: "/parking", label: "후진·주차" },

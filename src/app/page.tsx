@@ -15,6 +15,12 @@ const modules = [
     body: "실제 신호등 이미지로 의미가 무엇인지, 앞에서 무엇을 할지 확인.",
   },
   {
+    href: "/controls",
+    label: "조작",
+    title: "와이퍼 · 상향등 레버",
+    body: "칼럼 레버로 하는 일. 패싱·하향 전환, 미스트·워셔까지 도해로 확인.",
+  },
+  {
     href: "/direction",
     label: "방향감각",
     title: "후진 핸들, 왜 헷갈릴까",
@@ -49,8 +55,8 @@ export default function HomePage() {
             CAR PLAY
           </h1>
           <p className="animate-rise-delay-2 mt-5 max-w-md text-base leading-relaxed text-[#c5cbd8] sm:text-lg">
-            T300과 BeamNG로 익히던 후진·주차 감각을, 회사 책상에서도. 안내판·방향감각·
-            도로교통법까지 한곳에서.
+            T300과 BeamNG로 익히던 후진·주차 감각을, 회사 책상에서도.
+            안내판·조작·방향감각· 도로교통법까지 한곳에서.
           </p>
           <div className="animate-rise-delay-2 mt-8 flex flex-wrap gap-3">
             <Link
@@ -70,14 +76,18 @@ export default function HomePage() {
 
         <div className="lane-pulse mt-16 h-px max-w-xl bg-gradient-to-r from-[#f5c542]/80 via-[#f5c542]/25 to-transparent" />
 
-        <section className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <section className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {modules.map((m) => (
             <Link key={m.href} href={m.href} className="group block">
-              <p className="text-xs tracking-[0.2em] text-[#f5c542]">{m.label}</p>
+              <p className="text-xs tracking-[0.2em] text-[#f5c542]">
+                {m.label}
+              </p>
               <h2 className="mt-2 font-[family-name:var(--font-display)] text-xl tracking-wide text-[#f5f0e6] group-hover:text-[#f5c542]">
                 {m.title}
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-[#8b93a7]">{m.body}</p>
+              <p className="mt-2 text-sm leading-relaxed text-[#8b93a7]">
+                {m.body}
+              </p>
             </Link>
           ))}
         </section>

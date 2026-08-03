@@ -29,7 +29,8 @@ export function LawsExplorer() {
     return trafficLaws.filter((law) => {
       if (category !== "전체" && law.category !== category) return false;
       if (!q) return true;
-      const hay = `${law.title} ${law.summary} ${law.practiceTip} ${law.tags.join(" ")}`.toLowerCase();
+      const hay =
+        `${law.title} ${law.summary} ${law.practiceTip} ${law.tags.join(" ")}`.toLowerCase();
       return hay.includes(q);
     });
   }, [query, category]);
@@ -113,8 +114,8 @@ export function LawsExplorer() {
       </ul>
 
       <p className="border-t border-white/10 pt-4 text-xs leading-relaxed text-[#6b7385]">
-        본 내용은 학습·참고용 요약이며 법령 전문이 아닙니다. 최신 도로교통법·지자체
-        고시는 공식 출처를 확인하세요.
+        본 내용은 학습·참고용 요약이며 법령 전문이 아닙니다. 최신
+        도로교통법·지자체 고시는 공식 출처를 확인하세요.
       </p>
     </div>
   );

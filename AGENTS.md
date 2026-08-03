@@ -24,6 +24,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 |------|------|
 | `add-road-sign` | 도로 안내판·표지 추가·수정 |
 | `add-traffic-signal` | 차량·보행자 신호등 추가·수정 |
+| `add-vehicle-control` | 와이퍼·상향등 등 칼럼 레버 조작 설명 추가·수정 |
 | `add-traffic-law` | 도로교통법 항목 추가·수정 |
 | `add-direction-scenario` | 방향감각 퀴즈 시나리오 추가·수정 |
 | `add-parking-course` | 주차 코스 추가, 물리 파라미터 조정 |
