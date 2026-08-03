@@ -44,7 +44,7 @@ export function ControlsExplorer() {
         <div className="overflow-hidden rounded-sm border border-white/10 bg-[#0f151d]">
           <div className="relative aspect-video w-full border-b border-white/10">
             <Image
-              src="/controls/controls-manual-ko.png"
+              src="/controls/controls-manual-ai-ko.png"
               alt="운전대 레버 한눈에 보기 한글 설명서. 왼쪽은 조명과 깜빡이, 오른쪽은 와이퍼와 워셔를 큰 화살표와 번호로 설명"
               fill
               priority
